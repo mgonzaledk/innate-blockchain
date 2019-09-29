@@ -1,2 +1,2 @@
 # What is Innate Blockchain?
-Innate blockchain is a new cryptocurrency.
+Innate blockchain is the base for a new cryptocurrency, InnateCoin.
