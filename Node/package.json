@@ -1,0 +1,26 @@
+{
+  "name": "innate-blockchain",
+  "version": "1.0.0",
+  "description": "Innate blockchain cryptocurrency",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magonzalez192/innate-blockchain.git"
+  },
+  "keywords": [
+    "innate",
+    "blockchain"
+  ],
+  "author": "M. A. González",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/magonzalez192/innate-blockchain/issues"
+  },
+  "homepage": "https://github.com/magonzalez192/innate-blockchain#readme",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
