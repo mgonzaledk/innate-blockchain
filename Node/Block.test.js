@@ -1,5 +1,6 @@
 const Block = require('./Block')
 const { GENESIS_BLOCK } = require('./Config')
+const Crypto = require('./Crypto')
 
 describe('Block', () => {
     const timestamp = 'timestamp'
@@ -48,6 +49,14 @@ describe('Block', () => {
 
         it('establece una marca de tiempo', () => {
             expect(minedBlock.timestamp).not.toEqual(undefined)
+        })
+
+        it('establece el campo `hash` con SHA256', () => {
+            expect(minedBlock.hash).toEqual(Crypto.sha256(
+                minedBlock.timestamp,
+                previousBlock.hash,
+                data
+            ))
         })
     })
 })
