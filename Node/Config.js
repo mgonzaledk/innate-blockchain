@@ -1,3 +1,4 @@
+const MINING_RATE = 1000
 const INITIAL_DIFFICULTY = 3
 
 const GENESIS_BLOCK = {
@@ -9,4 +10,4 @@ const GENESIS_BLOCK = {
     data: []
 }
 
-module.exports = { GENESIS_BLOCK }
+module.exports = { MINING_RATE, GENESIS_BLOCK }

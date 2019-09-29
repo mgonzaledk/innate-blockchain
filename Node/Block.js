@@ -1,8 +1,8 @@
-const { GENESIS_BLOCK } = require('./Config')
+const { GENESIS_BLOCK, MINING_RATE } = require('./Config')
 const Crypto = require('./Crypto')
 
 class Block {
-    constructor({ timestamp, previousHash, hash, data, nonce, difficulty }) {
+    constructor({ timestamp, previousHash, hash, difficulty, nonce, data }) {
         this.timestamp = timestamp
         this.previousHash = previousHash
         this.hash = hash
@@ -36,6 +36,16 @@ class Block {
             nonce,
             data
         })
+    }
+
+    static adjustDifficulty({ originalBlock, timestamp }) {
+        const { difficulty } = originalBlock
+
+        if((timestamp - originalBlock.timestamp) > MINING_RATE) {
+            return difficulty - 1
+        }
+
+        return difficulty + 1
     }
 }
 
