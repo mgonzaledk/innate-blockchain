@@ -6,14 +6,25 @@ describe('Block', () => {
     const timestamp = 'timestamp'
     const previousHash = 'previousHash'
     const hash = 'hash'
+    const difficulty = 1
+    const nonce = 1
     const data = ['data', 'more_data']
 
-    const block = new Block({ timestamp, previousHash, hash, data })
+    const block = new Block({
+        timestamp,
+        previousHash,
+        hash,
+        difficulty,
+        nonce,
+        data
+    })
 
     it('contiene valores del constructor', () => {
         expect(block.timestamp).toEqual(timestamp)
         expect(block.previousHash).toEqual(previousHash)
         expect(block.hash).toEqual(hash)
+        expect(block.difficulty).toEqual(difficulty)
+        expect(block.nonce).toEqual(nonce)
         expect(block.data).toEqual(data)
     })
 
@@ -55,8 +66,15 @@ describe('Block', () => {
             expect(minedBlock.hash).toEqual(Crypto.sha256(
                 minedBlock.timestamp,
                 previousBlock.hash,
+                minedBlock.difficulty,
+                minedBlock.nonce,
                 data
             ))
+        })
+
+        it('establece un `hash` que coincide con el criterio de dificultad', () => {
+            expect(minedBlock.hash.substring(0, minedBlock.difficulty))
+                .toEqual('0'.repeat(minedBlock.difficulty))
         })
     })
 })

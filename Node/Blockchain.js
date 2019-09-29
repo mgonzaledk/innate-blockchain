@@ -12,14 +12,14 @@ class Blockchain {
         }
 
         for(let i = 1; i < chain.length; ++i) {
-            const { timestamp, previousHash, hash, data } = chain[i]
+            const { timestamp, previousHash, hash, data, nonce, difficulty } = chain[i]
             const currentPreviousHash = chain[i - 1].hash
 
             if(previousHash !== currentPreviousHash) {
                 return false
             }
 
-            const validatedHash = Crypto.sha256(timestamp, previousHash, data)
+            const validatedHash = Crypto.sha256(timestamp, previousHash, data, nonce, difficulty)
 
             if(hash !== validatedHash) {
                 return false
