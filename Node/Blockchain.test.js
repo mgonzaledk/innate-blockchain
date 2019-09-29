@@ -63,4 +63,56 @@ describe('Blockchain', () => {
             })
         })
     })
+
+    describe('replace()', () => {
+        let newChain, originalChain
+        let errorMock, logMock
+
+        beforeEach(() => {
+            newChain = new Blockchain()
+            originalChain = blockchain.chain
+
+            errorMock = jest.fn()
+            logMock = jest.fn()
+
+            global.console.error = errorMock
+            global.console.log = logMock
+        })
+
+        describe('cuando la nueva cadena no es mayor', () => {
+            it('no reemplaza la cadena', () => {
+                newChain.chain[0] = { new: 'chain' }
+
+                blockchain.replace(newChain.chain)
+
+                expect(blockchain.chain).toEqual(originalChain)
+            })
+        })
+
+        describe('cuando la nueva cadena es mayor', () => {
+            beforeEach(() => {
+                newChain.add({ data: '1' })
+                newChain.add({ data: '2' })
+                newChain.add({ data: '3' })
+            })
+
+            describe('y la cadena es inválida', () => {
+                it('no reemplaza la cadena', () => {
+                    newChain.chain[2].hash = 'fake'
+
+                    blockchain.replace(newChain.chain)
+
+                    expect(blockchain.chain).toEqual(originalChain)
+                })
+            })
+
+            describe('y la cadena es válida', () => {
+                it('reemplaza la cadena', () => {
+                    blockchain.replace(newChain.chain)
+
+                    expect(blockchain.chain).toEqual(newChain.chain)
+                })
+            })
+        })
+    })
 })

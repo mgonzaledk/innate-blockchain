@@ -37,6 +37,20 @@ class Blockchain {
 
         this.chain.push(block)
     }
+
+    replace(chain) {
+        if(chain.length <= this.chain.length) {
+            console.error('La cadena entrante es inferior')
+            return
+        }
+
+        if(!Blockchain.isValid(chain)) {
+            console.error('La cadena entrante no es válida')
+            return
+        }
+
+        this.chain = chain
+    }
 }
 
 module.exports = Blockchain
