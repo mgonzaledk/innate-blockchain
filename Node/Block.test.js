@@ -19,12 +19,34 @@ describe('Block', () => {
     describe(' - createGenesis()', () => {
         const genesisBlock = Block.createGenesis()
 
-        it('retorna instancia de un bloque', () => {
+        it('devuelve instancia de un bloque', () => {
             expect(genesisBlock instanceof Block).toBe(true)
         })
 
         it('devuelve los datos del génesis', () => {
             expect(genesisBlock).toEqual(GENESIS_BLOCK)
+        })
+    })
+
+    describe(' - mineBlock()', () => {
+        const previousBlock = Block.createGenesis()
+        const data = 'test data'
+        const minedBlock = Block.mineBlock({ previousBlock, data })
+
+        it('devuelve instancia de un bloque', () => {
+            expect(minedBlock instanceof Block).toBe(true)
+        })
+
+        it('establece `previousHash` como el `hash` del bloque anterior', () => {
+            expect(minedBlock.previousHash).toEqual(previousBlock.hash)
+        })
+
+        it('establece el campo `data`', () => {
+            expect(minedBlock.data).toEqual(data)
+        })
+
+        it('establece una marca de tiempo', () => {
+            expect(minedBlock.timestamp).not.toEqual(undefined)
         })
     })
 })
