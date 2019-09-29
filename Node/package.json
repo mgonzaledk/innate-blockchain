@@ -22,5 +22,8 @@
   "homepage": "https://github.com/magonzalez192/innate-blockchain#readme",
   "devDependencies": {
     "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "hex-to-binary": "^1.0.1"
   }
 }
