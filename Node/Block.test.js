@@ -17,7 +17,7 @@ describe('Block', () => {
         expect(block.data).toEqual(data)
     })
 
-    describe(' - createGenesis()', () => {
+    describe('createGenesis()', () => {
         const genesisBlock = Block.createGenesis()
 
         it('devuelve instancia de un bloque', () => {
@@ -29,7 +29,7 @@ describe('Block', () => {
         })
     })
 
-    describe(' - mineBlock()', () => {
+    describe('mineBlock()', () => {
         const previousBlock = Block.createGenesis()
         const data = 'test data'
 

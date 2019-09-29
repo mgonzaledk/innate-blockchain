@@ -1,7 +1,7 @@
 const Crypto = require('./Crypto')
 
 describe('Crypto', () => {
-    describe(' - sha256()', () => {
+    describe('sha256()', () => {
         const testString = 'innate-blockchain'
         const testHash = 'af6fe9735021444779302ce4bf3875555265a0c642f4e19fa7f3c2aa7a7186c8'
 
