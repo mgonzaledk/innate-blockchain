@@ -31,6 +31,7 @@ describe('Block', () => {
     describe(' - mineBlock()', () => {
         const previousBlock = Block.createGenesis()
         const data = 'test data'
+
         const minedBlock = Block.mineBlock({ previousBlock, data })
 
         it('devuelve instancia de un bloque', () => {
