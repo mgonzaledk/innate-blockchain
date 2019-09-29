@@ -1,5 +1,6 @@
 const Blockchain = require('./Blockchain')
 const Block = require('./Block')
+const Crypto = require('./Crypto')
 
 describe('Blockchain', () => {
     let blockchain
@@ -52,6 +53,26 @@ describe('Blockchain', () => {
                 it('devuelve falso', () => {
                     blockchain.chain[2].data = 'bad-evil'
 
+                    expect(Blockchain.isValid(blockchain.chain)).toBe(false)
+                })
+            })
+
+            describe('y contiene un bloque con una dificultad salteada', () => {
+                it('devuelve falso', () => {
+                    const lastBlock = blockchain.chain[blockchain.chain.length - 1]
+
+                    const timestamp = Date.now()
+                    const lastHash = lastBlock.hash
+                    const difficulty = lastBlock.difficulty - 3
+                    const nonce = 0
+                    const data = []
+                    const hash = Crypto.sha256(timestamp, lastHash, difficulty, nonce, data)
+
+                    const evilBlock = new Block({
+                        timestamp, lastHash, hash, difficulty, nonce, data
+                    })
+
+                    blockchain.chain.push(evilBlock)
                     expect(Blockchain.isValid(blockchain.chain)).toBe(false)
                 })
             })
