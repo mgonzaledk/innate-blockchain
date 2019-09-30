@@ -96,4 +96,41 @@ describe('Transaction', () => {
             })
         })
     })
+
+    describe('update()', () => {
+        let originalSignature, originalSenderOutput, nextRecipient, nextAmount
+
+        beforeEach(() => {
+            originalSignature = transaction.input.signature
+            originalSenderOutput = transaction.outputMap[senderWallet.publicKey]
+            nextRecipient = 'next-recipient-address'
+            nextAmount = 50
+
+            transaction.update({
+                senderWallet,
+                recipient: nextRecipient,
+                amount: nextAmount
+            })
+        })
+
+        it('genera la salida al siguiente receptor', () => {
+            expect(transaction.outputMap[nextRecipient]).toEqual(nextAmount)
+        })
+
+        it('resta la cantidad del balance de la cuenta de envío', () => {
+            expect(transaction.outputMap[senderWallet.publicKey])
+                .toEqual(originalSenderOutput - nextAmount)
+        })
+
+        it('mantiene el valor de entrada igual a los valores de salida', () => {
+            expect(Object.values(transaction.outputMap)
+                .reduce((total, outputAmount) => total + outputAmount))
+                .toEqual(transaction.input.amount)
+
+        })
+
+        it('refirma la transacción', () => {
+            expect(transaction.input.signature).not.toEqual(originalSignature)
+        })
+    })
 })
