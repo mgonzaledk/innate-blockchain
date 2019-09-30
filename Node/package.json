@@ -23,6 +23,9 @@
   "bugs": {
     "url": "https://github.com/magonzalez192/innate-blockchain/issues"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "homepage": "https://github.com/magonzalez192/innate-blockchain#readme",
   "devDependencies": {
     "cross-env": "^6.0.0",
@@ -31,6 +34,7 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "elliptic": "^6.5.1",
     "express": "^4.17.1",
     "hex-to-binary": "^1.0.1",
     "redis": "^2.8.0",

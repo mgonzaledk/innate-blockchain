@@ -13,4 +13,6 @@ const GENESIS_BLOCK = {
     data: []
 }
 
-module.exports = { PORT, MINING_RATE, GENESIS_BLOCK }
+const STARTING_BALANCE = 1000
+
+module.exports = { PORT, MINING_RATE, GENESIS_BLOCK, STARTING_BALANCE }
