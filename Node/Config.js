@@ -1,3 +1,5 @@
+const PORT = 3000
+
 const MINING_RATE = 1000
 const INITIAL_DIFFICULTY = 3
 
@@ -10,4 +12,4 @@ const GENESIS_BLOCK = {
     data: []
 }
 
-module.exports = { MINING_RATE, GENESIS_BLOCK }
+module.exports = { PORT, MINING_RATE, GENESIS_BLOCK }
