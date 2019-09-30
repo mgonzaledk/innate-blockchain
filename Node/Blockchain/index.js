@@ -1,5 +1,5 @@
 const Block = require('./Block')
-const Crypto = require('./Crypto')
+const Crypto = require('../Util/Crypto')
 
 class Blockchain {
     constructor() {

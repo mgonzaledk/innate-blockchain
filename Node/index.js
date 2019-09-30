@@ -4,7 +4,7 @@ const request = require('request')
 
 const Blockchain = require('./Blockchain')
 const { PORT, ROOT_NODE_ADDRESS } = require('./Config')
-const PubSub = require('./PubSub')
+const PubSub = require('./Server/PubSub')
 
 const app = express()
 const blockchain = new Blockchain()
