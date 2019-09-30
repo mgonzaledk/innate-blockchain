@@ -1,4 +1,4 @@
 **/Build
 **/node_modules
 **/Temp
-**/dump.rdb
+*.rdb
