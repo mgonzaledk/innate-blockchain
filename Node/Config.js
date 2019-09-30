@@ -1,4 +1,5 @@
 const PORT = 3000
+const ROOT_NODE_ADDRESS = `http://localhost:${PORT}`
 
 const MINING_RATE = 1000
 const INITIAL_DIFFICULTY = 3
