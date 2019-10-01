@@ -1,6 +1,8 @@
 const Blockchain = require('./index')
 const Block = require('./Block')
 const { Crypto } = require('../Util')
+const Transaction = require('../Wallet/Transaction')
+const Wallet = require('../Wallet')
 
 describe('Blockchain', () => {
     let blockchain
@@ -133,6 +135,118 @@ describe('Blockchain', () => {
 
                     expect(blockchain.chain).toEqual(newChain.chain)
                 })
+            })
+        })
+
+        describe('y la bandera `validateTransactions` es `true`', () => {
+            it('llama a validTransactionData()', () => {
+                const validTransactionDataMock = jest.fn()
+
+                blockchain.validTransactionData = validTransactionDataMock
+                newChain.add({ data: 'test' })
+                blockchain.replace(newChain.chain, true)
+
+                expect(validTransactionDataMock).toHaveBeenCalled()
+            })
+        })
+    })
+
+    describe('validTransactionData()', () => {
+        let transaction, rewardTransaction, wallet
+        let newChain
+
+        beforeEach(() => {
+            newChain = new Blockchain()
+            wallet = new Wallet()
+            transaction = wallet.createTransaction({
+                recipient: 'to-address',
+                amount: 65
+            })
+            rewardTransaction = Transaction.reward({ minerWallet: wallet })
+        })
+
+        describe('y los datos de transacción son válidos', () => {
+            it('devuelve verdadero', () => {
+                newChain.add({ data: [transaction, rewardTransaction] })
+
+                expect(blockchain.validTransactionData({
+                    chain: newChain.chain
+                })).toBe(true)
+            })
+        })
+
+        describe('y la transacción tiene múltiples recompensas', () => {
+            it('devuelve falso', () => {
+                newChain.add({
+                    data: [transaction, rewardTransaction, rewardTransaction]
+                })
+
+                expect(blockchain.validTransactionData({
+                    chain: newChain.chain
+                })).toBe(false)
+            })
+        })
+
+        describe('y la transacción tiene al menos un mapa de salida mal formado', () => {
+            describe('y la transacción no es de recompensa', () => {
+                it('devuelve falso', () => {
+                    transaction.outputMap[wallet.publicKey] = 9999
+                    newChain.add({ data: [transaction, rewardTransaction] })
+
+                    expect(blockchain.validTransactionData({
+                        chain: newChain.chain
+                    })).toBe(false)
+                })
+            })
+
+            describe('y la transacción es de recompensa', () => {
+                it('devuelve falso', () => {
+                    rewardTransaction.outputMap[wallet.publicKey] = 9999
+                    newChain.add({ data: [transaction, rewardTransaction] })
+
+                    expect(blockchain.validTransactionData({
+                        chain: newChain.chain
+                    })).toBe(false)
+                })
+            })
+        })
+
+        describe('y la transacción tiene al menos una entrada mal formada', () => {
+            it('devuelve falso', () => {
+                wallet.balance = 9000
+
+                const evilOutputMap = {
+                    [wallet.publicKey]: 8900,
+                    toAddress: 100
+                }
+
+                const evilTransaction = {
+                    input: {
+                        timestamp: Date.now(),
+                        amount: wallet.balance,
+                        address: wallet.publicKey,
+                        signature: wallet.sign(evilOutputMap)
+                    },
+                    outputMap: evilOutputMap
+                }
+
+                newChain.add({ data: [evilTransaction, rewardTransaction] })
+
+                expect(blockchain.validTransactionData({
+                    chain: newChain.chain
+                })).toBe(false)
+            })
+        })
+
+        describe('y un bloque contiene múltiples transacciones idénticas', () => {
+            it('devuelve falso', () => {
+                newChain.add({
+                    data: [transaction, transaction, rewardTransaction]
+                })
+
+                expect(blockchain.validTransactionData({
+                    chain: newChain.chain
+                })).toBe(false)
             })
         })
     })
