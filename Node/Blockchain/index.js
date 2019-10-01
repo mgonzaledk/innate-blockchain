@@ -43,7 +43,7 @@ class Blockchain {
         this.chain.push(block)
     }
 
-    replace(chain) {
+    replace(chain, onSuccess) {
         if(chain.length <= this.chain.length) {
             console.error('La cadena entrante es inferior')
             return
@@ -52,6 +52,10 @@ class Blockchain {
         if(!Blockchain.isValid(chain)) {
             console.error('La cadena entrante no es válida')
             return
+        }
+
+        if(onSuccess) {
+            onSuccess()
         }
 
         this.chain = chain
