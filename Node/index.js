@@ -72,6 +72,18 @@ app.get('/v1/mine-transactions', (req, res) => {
     res.redirect('/api/blocks')
 })
 
+app.get('/v1/wallet-info', (req, res) => {
+    const address = wallet.publicKey
+
+    res.json({
+        address,
+        balance: Wallet.balance({
+            chain: blockchain.chain,
+            address
+        })
+    })
+})
+
 const syncWithRootState = () => {
     request({ url: `${ROOT_NODE_ADDRESS}/v1/blocks` }, (error, response, body) => {
         if(!error && response.statusCode === 200) {
