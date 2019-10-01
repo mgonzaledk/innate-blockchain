@@ -10,8 +10,8 @@ const Wallet = require('./Wallet')
 
 const app = express()
 const blockchain = new Blockchain()
-const pubsub = new PubSub({ blockchain })
 const transactionPool = new TransactionPool()
+const pubsub = new PubSub({ blockchain, transactionPool })
 const wallet = new Wallet()
 
 app.use(bodyParser.json())
@@ -31,24 +31,42 @@ app.post('/v1/mine', (req, res) => {
 
 app.post('/v1/transaction', (req, res) => {
     const { amount, recipient } = req.body
-    let transaction
+    let transaction = transactionPool.exists({
+        inputAddress: wallet.publicKey
+    })
 
     try {
-        transaction = wallet.createTransaction({ amount, recipient })
+        if(transaction) {
+            transaction.update({ senderWallet: wallet, recipient, amount })
+        } else {
+            transaction = wallet.createTransaction({ amount, recipient })
+        }
     } catch(error) {
         return res.status(400).json({ type: 'error', message: error.message })
     }
 
     transactionPool.add(transaction)
+    pubsub.broadcastTransaction(transaction)
 
     res.json({ type: 'success', transaction })
 })
 
-const syncChains = () => {
+app.get('/v1/transaction-pool-map', (req, res) => {
+    res.json(transactionPool.transactionMap)
+})
+
+const syncWithRootState = () => {
     request({ url: `${ROOT_NODE_ADDRESS}/v1/blocks` }, (error, response, body) => {
         if(!error && response.statusCode === 200) {
             const rootChain = JSON.parse(body)
             blockchain.replace(rootChain)
+        }
+    })
+
+    request({ url: `${ROOT_NODE_ADDRESS}/v1/transaction-pool-map` }, (error, response, body) => {
+        if(!error && response.statusCode === 200) {
+            const rootTransactionPoolMap = JSON.parse(body)
+            transactionPool.replace(rootTransactionPoolMap)
         }
     })
 }
@@ -63,6 +81,6 @@ app.listen(port, () => {
     console.info(`Escuchando en localhost:${port}`)
 
     if(port !== PORT) {
-        syncChains()
+        syncWithRootState()
     }
 })
