@@ -15,4 +15,14 @@ const GENESIS_BLOCK = {
 
 const STARTING_BALANCE = 1000
 
-module.exports = { PORT, MINING_RATE, GENESIS_BLOCK, STARTING_BALANCE }
+const REWARD_INPUT = { address: '***INNATE-REWARD-ADDRESS***' }
+const MINING_REWARD = 50
+
+module.exports = {
+    PORT,
+    MINING_RATE,
+    GENESIS_BLOCK,
+    STARTING_BALANCE,
+    REWARD_INPUT,
+    MINING_REWARD
+}
