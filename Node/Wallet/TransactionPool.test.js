@@ -32,4 +32,42 @@ describe('TransactionPool', () => {
                 .toBe(transaction)
         })
     })
+
+    describe('valids()', () => {
+        let validTransactions, errorMock
+
+        beforeEach(() => {
+            validTransactions = []
+            errorMock = jest.fn()
+
+            global.console.error = errorMock
+
+            for(let i = 0; i < 10; ++i) {
+                transaction = new Transaction({
+                    senderWallet,
+                    recipient: 'to-address',
+                    amount: 30
+                })
+
+                if(i % 3 === 0) {
+                    transaction.input.amount = 9999
+                } else if(i % 3 === 1) {
+                    transaction.input.signature = new Wallet().sign('foo')
+                } else {
+                    validTransactions.push(transaction)
+                }
+
+                transactionPool.add(transaction)
+            }
+        })
+
+        it('devuelve las transacciones válidas', () => {
+            expect(transactionPool.valids()).toEqual(validTransactions)
+        })
+
+        it('registrar errores para las transacciones inválidas', () => {
+            transactionPool.valids()
+            expect(errorMock).toHaveBeenCalled()
+        })
+    })
 })
