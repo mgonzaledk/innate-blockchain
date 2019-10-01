@@ -9,11 +9,44 @@ class Wallet {
         this.publicKey = this.keyPair.getPublic().encode('hex')
     }
 
+    static balance({ chain, address }) {
+        let hasConductedTransaction = false
+        let outputsTotal = 0
+
+        for(let i = chain.length - 1; i > 0; --i) {
+            const block = chain[i]
+
+            for(let transaction of block.data) {
+                if(transaction.input.address === address) {
+                    hasConductedTransaction = true
+                }
+
+                const addressOutput = transaction.outputMap[address]
+
+                if(addressOutput) {
+                    outputsTotal += addressOutput
+                }
+            }
+
+            if(hasConductedTransaction) {
+                break
+            }
+        }
+
+        return hasConductedTransaction ?
+            outputsTotal :
+            STARTING_BALANCE + outputsTotal
+    }
+
     sign(data) {
         return this.keyPair.sign(Crypto.sha256(data))
     }
 
-    createTransaction({ recipient, amount }) {
+    createTransaction({ recipient, amount, chain }) {
+        if(chain) {
+            this.balance = Wallet.balance({ chain, address: this.publicKey })
+        }
+
         if(amount > this.balance) {
             throw Error('La cantidad excede el balance')
         }
