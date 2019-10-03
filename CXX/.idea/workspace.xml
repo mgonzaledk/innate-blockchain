@@ -54,20 +54,14 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="module1" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="innate-blockchain-cxx" TARGET_NAME="module1" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="module2" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="innate-blockchain-cxx" TARGET_NAME="module2" CONFIG_NAME="Debug">
+    <configuration name="module-test" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="innate-blockchain-cxx" TARGET_NAME="module-test" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="CMake Application.innate-blockchain" />
-      <item itemvalue="CMake Application.module1" />
-      <item itemvalue="CMake Application.module2" />
+      <item itemvalue="CMake Application.module-test" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -80,7 +74,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1570095861177</updated>
-      <workItem from="1570095862407" duration="621000" />
+      <workItem from="1570095862407" duration="760000" />
     </task>
     <servers />
   </component>
