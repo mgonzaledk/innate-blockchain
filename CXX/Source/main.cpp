@@ -1,20 +1,35 @@
 #include <iostream>
+#include <tuple>
 
 #include <Util/Time.hpp>
+#include <Serialization/Json.hpp>
+
+class Block {
+private:
+    std::string hash;
+    std::string previousHash;
+    int difficulty = 0;
+
+public:
+    Block() :
+        hash("Prueba hash"), previousHash("Prueba previousHash"), difficulty(100) {}
+
+    constexpr static auto properties = std::make_tuple(
+            property(&Block::hash, "hash"),
+            property(&Block::previousHash, "previousHash"),
+            property(&Block::difficulty, "difficulty")
+    );
+
+
+};
 
 int main(int argc, char **argv) {
-    Timestamp now = Time::Now();
-    std::string nowStr = Time::Format(now);
-    Timestamp nowParsed = Time::Parse(nowStr);
-    std::string nowParsedStr = Time::Format(nowParsed);
+    Block block;
 
-    std::cout << now << "\n";
-    std::cout << nowStr << "\n";
-    std::cout << nowParsed << "\n";
-    std::cout << nowParsedStr << "\n";
+    Json::Value jsonBlock = Json::ToJson(block);
+    Block sameBlock = Json::FromJson<Block>(jsonBlock);
 
-    std::cout << Time::Difference(now, nowParsed) << "\n";
-    std::cout << Time::Difference(nowStr, nowParsedStr) << "\n";
+    std::cout << jsonBlock;
 
     return 0;
 }

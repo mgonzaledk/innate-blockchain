@@ -1,5 +1,9 @@
-#ifndef TEST_HPP
-#define TEST_HPP
+//
+// Created by Miguel Ángel on 03/10/2019.
+//
+
+#ifndef INNATE_BLOCKCHAIN_CXX_TIME_H
+#define INNATE_BLOCKCHAIN_CXX_TIME_H
 
 #include <ctime>
 #include <string>
@@ -19,4 +23,4 @@ public:
     static int Difference(const std::string &first, const std::string &second);
 };
 
-#endif
+#endif //INNATE_BLOCKCHAIN_CXX_TIME_H
