@@ -52,20 +52,7 @@ namespace Json {
             data.number = value;
             return *this;
         }
-
-        friend std::ostream & operator << (std::ostream &out, const Json::Value &value);
     };
-
-    std::ostream &operator<<(std::ostream &out, const Json::Value &value) {
-        for(typename std::map<std::string, Value>::const_iterator it = value.data.subObject.begin();
-             it != value.data.subObject.end();
-             ++it
-        ) {
-            out << (*it).first << " --> " << (*it).second << std::endl;
-        }
-
-        return out;
-    }
 
     template<typename T> T &AsAny(Value &);
     template<typename T> const T &AsAny(const Value &);
@@ -88,6 +75,26 @@ namespace Json {
     template<>
     std::string &AsAny<std::string>(Value &value) {
         return value.data.string;
+    }
+
+    template<typename T> T AsString(Value &value) {
+        return std::move(Json::AsAny<T>(value));
+    }
+
+    template<typename T> const T AsString(const Value &value) {
+        return std::move(Json::AsAny<T>(value));
+    }
+
+    template<>
+    std::string AsString(Value &value) {
+        std::string str("\"" + value.data.string + "\"");
+        return std::move(str);
+    }
+
+    template<>
+    const std::string AsString(const Value &value) {
+        std::string str("\"" + value.data.string + "\"");
+        return std::move(str);
     }
 
     template<typename T>
@@ -129,6 +136,34 @@ namespace Json {
         });
 
         return data;
+    }
+
+    template<typename T>
+    std::string ToString(const Json::Value &value) {
+        std::stringstream stream;
+
+        // Obtener el número de propiedades.
+        constexpr auto properties = std::tuple_size<decltype(T::properties)>::value;
+
+        stream << "{";
+
+        // Iterar en secuencia sobre el índice de las propiedades.
+        for_sequence(std::make_index_sequence<properties>{}, [&](auto i){
+            // Obtener la propiedad.
+            constexpr auto property = std::get<i>(T::properties);
+
+            // Obtener el tipo de la propiedad.
+            using Type = typename decltype(property)::Type;
+
+            stream << "\"" << property.name << "\"";
+            stream << ":" << Json::AsString<Type>(value[property.name]);
+            stream << ",";
+        });
+
+        stream.seekp(-1, std::ios_base::end);
+        stream << "}";
+
+        return stream.str();
     }
 }
 
