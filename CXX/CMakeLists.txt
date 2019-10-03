@@ -1,17 +1,15 @@
-# -----------------------------------------------------------------------------
-# Proyecto: innate-blockchain.
-# -----------------------------------------------------------------------------
+cmake_minimum_required(VERSION 3.2)
 
-cmake_minimum_required(VERSION 3.10.2)
-project(innate-blockchain VERSION 1.0 LANGUAGES CXX)
+project(innate-blockchain-cxx)
 
-# -----------------------------------------------------------------------------
-# Dependencias.
-# -----------------------------------------------------------------------------
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-include(GNUInstallDirs)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_SOURCE_DIR}/Build                    )
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release/Bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/Bin  )
 
-find_package(OpenSSL)
-add_library(openssl SHARED IMPORTED)
-set_property(TARGET openssl PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${OPENSSL_INCLUDE_DIR})
-set_property(TARGET openssl PROPERTY IMPORTED_LOCATION ${OPENSSL_SSL_LIBRARY})
+include_directories(${CMAKE_CURRENT_LIST_DIR}/Include)
+
+add_subdirectory(Source)
