@@ -1,5 +1,6 @@
 add_subdirectory(Util)
 add_subdirectory(Serialization)
+add_subdirectory(Blockchain)
 
 add_executable(innate-blockchain main.cpp)
 
@@ -8,4 +9,5 @@ set_target_properties(innate-blockchain PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${C
 target_link_libraries(innate-blockchain PRIVATE
     util
     serialization
+    blockchain
 )
