@@ -11,6 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Rel
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/Bin  )
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/Include)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/External)
 
 # =============================================================================
 # Dependencias
@@ -49,4 +50,5 @@ find_package(jsoncpp)
 # Subdirectorio de los módulos
 # =============================================================================
 
+add_subdirectory(External)
 add_subdirectory(Source)

@@ -110,7 +110,7 @@ public:
         auto previousHash = Serializer<std::string>::Deserialize(in);
         auto difficulty = Serializer<int>::Deserialize(in);
 
-        return Block(hash, previousHash, difficulty);
+        //return Block(hash, previousHash, difficulty);
     }
 };
 
