@@ -1,5 +1,5 @@
 add_library(crypto STATIC
-    Crypto.cpp
+    Sha3.cpp
     Ed25519.cpp
 )
 
