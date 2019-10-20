@@ -4,4 +4,6 @@
 
 // Doc: https://stackoverflow.com/a/34165367
 
+#include <Serialization/Serializer.hpp>
+
 constexpr const char *DUMMY_SERIALIZATION = "DUMMY";

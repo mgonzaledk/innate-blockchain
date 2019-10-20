@@ -11,7 +11,8 @@
 #include <memory>
 #include <vector>
 
-#include <Blockchain/Block.hpp>
+#include <Core/Block.hpp>
+#include <Util/Time.hpp>
 
 template<typename T>
 struct Serializer {
@@ -43,7 +44,8 @@ struct Serializer<T *> {
 
     static T *Deserialize(std::ifstream &in, std::size_t length) {
         static_assert(std::is_trivially_copyable_v<T>, "Serialize::is_trivially_copyable_v");
-        
+
+        // TODO: This produces a leak.
         auto objects = std::make_unique<T[]>(length);
         
         T *object = objects.get();
@@ -100,17 +102,25 @@ template<>
 class Serializer<Block> {
 public:
     static void Serialize(std::ofstream &out, const Block &block) {
+        Serializer<std::uint64_t>::Serialize(out, block.index);
         Serializer<std::string>::Serialize(out, block.hash);
         Serializer<std::string>::Serialize(out, block.previousHash);
-        Serializer<int>::Serialize(out, block.difficulty);
+        Serializer<Timestamp>::Serialize(out, block.timestamp);
+        Serializer<std::string>::Serialize(out, block.data);
+        Serializer<std::uint64_t>::Serialize(out, block.difficulty);
+        Serializer<std::uint64_t>::Serialize(out, block.nonce);
     }
 
     static Block Deserialize(std::ifstream &in) {
+        auto index = Serializer<std::uint64_t>::Deserialize(in);
         auto hash = Serializer<std::string>::Deserialize(in);
         auto previousHash = Serializer<std::string>::Deserialize(in);
-        auto difficulty = Serializer<int>::Deserialize(in);
+        auto timestamp = Serializer<Timestamp>::Deserialize(in);
+        auto data = Serializer<std::string>::Deserialize(in);
+        auto difficulty = Serializer<std::uint64_t>::Deserialize(in);
+        auto nonce = Serializer<std::uint64_t>::Deserialize(in);
 
-        //return Block(hash, previousHash, difficulty);
+        return Block(index, hash, previousHash, timestamp, data, difficulty, nonce);
     }
 };
 

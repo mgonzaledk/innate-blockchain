@@ -2,10 +2,9 @@
 #include <iostream>
 #include <tuple>
 
-#include <Blockchain/Block.hpp>
+#include <Core/Block.hpp>
 #include <Crypto/Ed25519.hpp>
 #include <Serialization/Serializer.hpp>
-#include <Util/Time.hpp>
 
 int main(int argc, char **argv) {
     Ed25519::KeyPair pair = Ed25519::CreateKeyPair();
@@ -15,6 +14,21 @@ int main(int argc, char **argv) {
         std::cout << "Firma correcta" << std::endl;
     } else {
         std::cout << "Firma incorrecta" << std::endl;
+    }
+
+    Block block0 = Block::CreateGenesis();
+    std::ofstream out("block0.bin", std::ios::binary);
+
+    if(out.is_open()) {
+        Serializer<Block>::Serialize(out, block0);
+        out.close();
+    }
+
+    std::ifstream in("block0.bin", std::ios::binary);
+
+    if(in.is_open()) {
+        std::cout << Serializer<Block>::Deserialize(in) << std::endl;
+        in.close();
     }
 
     return 0;

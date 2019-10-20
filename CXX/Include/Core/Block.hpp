@@ -43,6 +43,18 @@ public:
     }
 
     friend class Serializer<Block>;
+
+    friend std::ostream &operator<<(std::ostream &os, const Block &obj) {
+        os  << " Block " << obj.index << std::endl
+            << "\tHash: " << obj.hash << std::endl
+            << "\tPrev. hash: " << obj.previousHash << std::endl
+            << "\tTimestamp: " << obj.timestamp << std::endl
+            << "\tData: " << obj.data << std::endl
+            << "\tDifficulty: " << obj.difficulty << std::endl
+            << "\tNonce: " << obj.nonce;
+
+        return os;
+    }
 };
 
 #endif // INNATE_BLOCKCHAIN_CXX_BLOCK_H
