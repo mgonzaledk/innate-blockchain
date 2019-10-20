@@ -48,10 +48,9 @@ struct Serializer<T *> {
         // TODO: This produces a leak.
         auto objects = std::make_unique<T[]>(length);
         
-        T *object = objects.get();
+        T *object = objects.release();
         in.read(reinterpret_cast<char *>(object), sizeof(T) * length);
-
-        objects.release();
+        
         return object;
     }
 };

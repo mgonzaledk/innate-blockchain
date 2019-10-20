@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
     std::ofstream out("block0.bin", std::ios::binary);
 
     if(out.is_open()) {
+        Serializer<std::string>::Serialize(out, "HOLA");
         Serializer<Block>::Serialize(out, block0);
         out.close();
     }
@@ -27,6 +28,7 @@ int main(int argc, char **argv) {
     std::ifstream in("block0.bin", std::ios::binary);
 
     if(in.is_open()) {
+        std::cout << Serializer<std::string>::Deserialize(in) << std::endl;
         std::cout << Serializer<Block>::Deserialize(in) << std::endl;
         in.close();
     }
